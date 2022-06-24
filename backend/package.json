@@ -1,0 +1,26 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "npx nodemon --inspect ./signalling-server.ts",
+		"production": "npx tsc ./signalling-server.ts && node ./signalling-server.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"ws": "^8.8.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.18",
+		"ts-node": "^10.8.1",
+		"typescript": "^4.7.4"
+	},
+	"nodemonConfig": {
+		"execMap": {
+			"ts": "node --require ts-node/register/transpile-only"
+		}
+	}
+}

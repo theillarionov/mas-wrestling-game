@@ -1,6 +1,13 @@
-import './style.css'
+import "./style.css"
+// @ts-ignore
+import adapter from "webrtc-adapter"
+// @ts-ignore
+//import * as PIXI from "pixi.js"
+import { MESSAGES } from "../../backend/constants/MESSAGES"
 
-const app = document.querySelector<HTMLDivElement>('#app')!
+console.log(MESSAGES)
+
+const app = document.querySelector<HTMLDivElement>("#app")!
 
 app.innerHTML = `
   <h1>Hello Vite!</h1>

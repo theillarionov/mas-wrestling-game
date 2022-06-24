@@ -1,14 +1,18 @@
 {
-  "name": "mas-wrestling",
-  "private": true,
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "^4.5.4",
-    "vite": "^2.9.9"
-  }
+	"name": "mas-wrestling",
+	"private": true,
+	"version": "0.0.0",
+	"scripts": {
+		"dev": "vite --host",
+		"build": "tsc && vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"typescript": "^4.5.4",
+		"vite": "^2.9.9"
+	},
+	"dependencies": {
+		"pixi.js": "^6.4.2",
+		"webrtc-adapter": "^8.1.1"
+	}
 }
