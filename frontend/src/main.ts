@@ -3,9 +3,9 @@ import "./style.css"
 import adapter from "webrtc-adapter"
 // @ts-ignore
 //import * as PIXI from "pixi.js"
-import { MESSAGES } from "../../backend/constants/MESSAGES"
+import { SIGNALS } from "../../_constants/SIGNALS"
 
-console.log(MESSAGES)
+console.log(SIGNALS)
 
 const app = document.querySelector<HTMLDivElement>("#app")!
 

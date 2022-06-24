@@ -1,15 +1,13 @@
 {
 	"name": "backend",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"private": true,
+	"version": "0.0.0",
 	"scripts": {
 		"dev": "npx nodemon --inspect ./signalling-server.ts",
-		"production": "npx tsc ./signalling-server.ts && node ./signalling-server.js"
+		"build": "npx tsc",
+		"serve": "node ./dist/signalling-server.js",
+		"production": "npm run build && npm run serve"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
 	"dependencies": {
 		"ws": "^8.8.0"
 	},

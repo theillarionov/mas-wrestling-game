@@ -1,4 +1,4 @@
-export const MESSAGES = {
+export const SIGNALS = {
 	SERVER: {
 		GENERATED_ID: "server-generated-id",
 	},
