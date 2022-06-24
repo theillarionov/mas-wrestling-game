@@ -2,8 +2,9 @@
 	"name": "backend",
 	"private": true,
 	"version": "0.0.0",
+	"type": "module",
 	"scripts": {
-		"dev": "npx nodemon --inspect ./signalling-server.ts",
+		"dev": "nodemon --inspect ./src/signalling-server.ts",
 		"build": "npx tsc",
 		"serve": "node ./dist/signalling-server.js",
 		"production": "npm run build && npm run serve"

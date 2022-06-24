@@ -1,12 +1,6 @@
 import { Room } from "./Room"
 
-/* export const playerId: symbol = Symbol("playerId")
-
-interface WebsocketWithPlayerId extends WebSocket {
-	playerId: symbol
-} */
-
-const playerId = Symbol("playerId")
+export const playerId = Symbol("playerId")
 
 export class Player {
 	id: string

@@ -1,4 +1,6 @@
 signalling-server.js
+.env.development
+.env.production
 
 # Logs
 logs
