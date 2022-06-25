@@ -16,6 +16,8 @@ socket.onopen = () => {
 	send("handshake", { id: player.id })
 }
 
+console.log(adapter, PIXI)
+
 socket.onmessage = async ({ data }) => {
 	data = JSON.parse(data)
 	const type = data.type
@@ -61,7 +63,7 @@ socket.onmessage = async ({ data }) => {
 }
 
 socket.onclose = (e) => {
-	log("close from client")
+	log("close from client", e)
 }
 
 socket.onerror = (e) => {
@@ -121,8 +123,8 @@ function initDataChannel(channel: RTCDataChannel) {
 		document.querySelector("#messages")!.prepend(div)
 	}
 
-	channel.onopen = (e) => log("open!!!!")
-	channel.onclose = (e) => log("closed!!!!!!")
+	channel.onopen = (e) => log("open!!!!", e)
+	channel.onclose = (e) => log("closed!!!!!!", e)
 	peerConnection.channel = channel
 }
 

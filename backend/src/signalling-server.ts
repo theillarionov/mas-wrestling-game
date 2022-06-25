@@ -30,7 +30,7 @@ const server = useHttps
 const wss = new WebSocketServer({ server })
 
 wss.on("error", (e) => {
-	console.log("wss error")
+	console.log("wss error", e)
 })
 
 wss.on("connection", (socket: WebSocket) => {
