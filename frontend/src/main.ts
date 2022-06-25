@@ -7,6 +7,7 @@ import { SIGNALS } from "../../common/constants/SIGNALS"
 import { Player } from "./classes/Player"
 import { socket, send } from "./socket"
 
+declare const window: any
 // const isProduction = import.meta.env.MODE === "production"
 
 const player = new Player()

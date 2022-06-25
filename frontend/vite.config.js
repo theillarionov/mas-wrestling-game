@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from "vite"
+import { defineConfig } from "vite"
 
 const assetFileNames = "game-assets/[name]-[hash]"
 
