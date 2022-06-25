@@ -1,9 +1,11 @@
+///<reference path="types.d.ts" />
 import dotenv from "dotenv"
+import path from "path"
 import { readFileSync } from "fs"
-import { createServer } from "http"
+import { createServer as createServerHttp } from "http"
+import { createServer as createServerHttps } from "https"
 import { randomBytes } from "crypto"
 import { WebSocketServer } from "ws"
-import path from "path"
 
 import { ERRORS } from "../../common/constants/ERRORS"
 import { SIGNALS } from "../../common/constants/SIGNALS"
@@ -14,3 +16,147 @@ import { Room } from "./classes/Room"
 dotenv.config({
 	path: path.join(__dirname, "../../common/env/.env." + process.env.NODE_ENV),
 })
+
+const isProduction = process.env.NODE_ENV === "production"
+const useHttps = isProduction
+
+const server = useHttps
+	? createServerHttps({
+			cert: readFileSync("pem"),
+			key: readFileSync("pem"),
+	  })
+	: createServerHttp()
+
+const wss = new WebSocketServer({ server })
+
+wss.on("error", (e) => {
+	console.log("wss error")
+})
+
+wss.on("connection", (socket: WebSocket) => {
+	socket.onerror = (e) => {
+		console.log("socket error")
+	}
+
+	socket.onclose = () => {
+		Player.find(socket[playerId])!.delete()
+		log("close")
+	}
+
+	socket.onmessage = (data: any) => {
+		const currentPlayerId = socket[playerId]
+		const currentPlayer = Player.find(currentPlayerId)
+
+		data = JSON.parse(data)
+		const type = data.type
+		const message = data.payload
+
+		switch (type) {
+			case SIGNALS.HANDSHAKE:
+				let id = message.id
+
+				if (!id) {
+					id = randomBytes(16).toString("hex")
+					send(SIGNALS.SERVER.GENERATED_ID, { id })
+				}
+
+				new Player({ id, socket })
+
+				log(SIGNALS.HANDSHAKE)
+
+				break
+
+			case SIGNALS.CLIENT.ASKS_TO_JOIN: {
+				const room = Room.find(message.roomId)
+
+				if (!room) {
+					send(SIGNALS.ERROR, { text: ERRORS.ROOM_NOT_FOUND.en })
+					return
+				}
+
+				const host = room.host
+
+				if (!host) {
+					send(SIGNALS.ERROR, { text: ERRORS.PLAYER_NOT_FOUND.en })
+					return
+				} else if (host.enemyId) {
+					send(SIGNALS.ERROR, { text: ERRORS.PLAYER_IN_GAME.en })
+					return
+				}
+
+				currentPlayer!.enemyId = host.id
+				host.enemyId = currentPlayerId
+
+				room.clientId = currentPlayerId
+
+				send(SIGNALS.HOST.SENDS_OFFER_AND_CANDIDATES, {
+					offer: host.sdp,
+					iceCandidates: host.iceCandidates,
+				})
+
+				break
+			}
+			case SIGNALS.CLIENT.GENERATED_ANSWER: {
+				currentPlayer!.sdp = message.answer
+
+				send(
+					SIGNALS.CLIENT.SENDS_ANSWER,
+					{ answer: message.answer },
+					currentPlayer!.enemy!.socket
+				)
+				log(SIGNALS.CLIENT.GENERATED_ANSWER)
+				break
+			}
+
+			case SIGNALS.HOST.GENERATED_OFFER: {
+				currentPlayer!.sdp = message.offer
+
+				const room = new Room({ hostId: currentPlayerId })
+
+				send(SIGNALS.HOST.CREATED_ROOM, { roomId: room.id })
+
+				log(SIGNALS.HOST.GENERATED_OFFER)
+				break
+			}
+
+			case SIGNALS.PEER.GENERATED_ICE_CANDIDATE:
+				currentPlayer!.iceCandidates.push(message.iceCandidate)
+				if (currentPlayer!.enemyId) {
+					send(
+						SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE,
+						{ iceCandidate: message.iceCandidate },
+						currentPlayer!.enemy!.socket
+					)
+				}
+				log(SIGNALS.PEER.GENERATED_ICE_CANDIDATE)
+				break
+		}
+	}
+
+	function send(type: string, payload: object, sender = socket) {
+		sender.send(JSON.stringify({ type, payload }))
+	}
+
+	function log(text: string) {
+		console.log(
+			text + " by " + socket[playerId]
+			//socket[peer]
+		)
+	}
+})
+
+server.listen(process.env.PORT, () => {
+	const ws = isProduction ? "wss://" : "ws://"
+	console.log(
+		"Signalling server running on " +
+			ws +
+			process.env.ADDRESS +
+			":" +
+			process.env.PORT
+	)
+})
+
+//@ts-ignore
+global.players = Player.instances
+//@ts-ignore
+global.rooms = Room.instances
