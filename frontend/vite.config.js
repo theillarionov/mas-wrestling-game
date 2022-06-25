@@ -1,4 +1,4 @@
-import { defineConfig } from "vite"
+import { defineConfig, loadEnv } from "vite"
 
 const assetFileNames = "game-assets/[name]-[hash]"
 
@@ -12,4 +12,6 @@ export default defineConfig({
 			},
 		},
 	},
+	envDir: "../common/env",
+	envPrefix: "WS_",
 })

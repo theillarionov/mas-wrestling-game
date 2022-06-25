@@ -7,7 +7,21 @@
 		<title>Vite App</title>
 	</head>
 	<body>
-		<div id="app"></div>
+		<span id="id"></span>
+		<button onclick="localStorage.clear()">clear</button><br />
+		<input type="text" id="room-id-join" />
+		<button onclick="joinGame()">joinGame</button><br />
+		<button onclick="hostGame()">hostGame</button>
+		roomId: <span id="room-id"></span>
+
+		<div style="padding-top: 100px; margin-bottom: 100px">
+			<input id="message" />
+			<button onclick="sendMessage()">sendMessage</button><br />
+			messages:
+			<div id="messages"></div>
+
+			<div style="background: grey" id="log"></div>
+		</div>
 		<script type="module" src="/src/main.ts"></script>
 	</body>
 </html>

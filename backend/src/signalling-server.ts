@@ -35,7 +35,7 @@ wss.on("error", (e) => {
 
 wss.on("connection", (socket: WebSocket) => {
 	socket.onerror = (e) => {
-		console.log("socket error")
+		log("socket error")
 	}
 
 	socket.onclose = () => {
@@ -44,12 +44,11 @@ wss.on("connection", (socket: WebSocket) => {
 	}
 
 	socket.onmessage = (data: any) => {
-		const currentPlayerId = socket[playerId]
-		const currentPlayer = Player.find(currentPlayerId)
-
-		data = JSON.parse(data)
+		data = JSON.parse(data.data)
 		const type = data.type
 		const message = data.payload
+
+		const currentPlayer = Player.find(socket[playerId])!
 
 		switch (type) {
 			case SIGNALS.HANDSHAKE:
@@ -84,10 +83,10 @@ wss.on("connection", (socket: WebSocket) => {
 					return
 				}
 
-				currentPlayer!.enemyId = host.id
-				host.enemyId = currentPlayerId
+				currentPlayer.enemyId = host.id
+				host.enemyId = currentPlayer.id
 
-				room.clientId = currentPlayerId
+				room.clientId = currentPlayer.id
 
 				send(SIGNALS.HOST.SENDS_OFFER_AND_CANDIDATES, {
 					offer: host.sdp,
@@ -97,21 +96,21 @@ wss.on("connection", (socket: WebSocket) => {
 				break
 			}
 			case SIGNALS.CLIENT.GENERATED_ANSWER: {
-				currentPlayer!.sdp = message.answer
+				currentPlayer.sdp = message.answer
 
 				send(
 					SIGNALS.CLIENT.SENDS_ANSWER,
 					{ answer: message.answer },
-					currentPlayer!.enemy!.socket
+					currentPlayer.enemy!.socket
 				)
 				log(SIGNALS.CLIENT.GENERATED_ANSWER)
 				break
 			}
 
 			case SIGNALS.HOST.GENERATED_OFFER: {
-				currentPlayer!.sdp = message.offer
+				currentPlayer.sdp = message.offer
 
-				const room = new Room({ hostId: currentPlayerId })
+				const room = new Room({ hostId: currentPlayer.id })
 
 				send(SIGNALS.HOST.CREATED_ROOM, { roomId: room.id })
 
@@ -120,12 +119,12 @@ wss.on("connection", (socket: WebSocket) => {
 			}
 
 			case SIGNALS.PEER.GENERATED_ICE_CANDIDATE:
-				currentPlayer!.iceCandidates.push(message.iceCandidate)
-				if (currentPlayer!.enemyId) {
+				currentPlayer.iceCandidates.push(message.iceCandidate)
+				if (currentPlayer.enemyId) {
 					send(
 						SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE,
 						{ iceCandidate: message.iceCandidate },
-						currentPlayer!.enemy!.socket
+						currentPlayer.enemy!.socket
 					)
 				}
 				log(SIGNALS.PEER.GENERATED_ICE_CANDIDATE)
@@ -145,14 +144,13 @@ wss.on("connection", (socket: WebSocket) => {
 	}
 })
 
-server.listen(process.env.PORT, () => {
-	const ws = isProduction ? "wss://" : "ws://"
+server.listen(process.env.WS_PORT, () => {
 	console.log(
 		"Signalling server running on " +
-			ws +
-			process.env.ADDRESS +
+			process.env.WS_SCHEMA +
+			process.env.WS_ADDRESS +
 			":" +
-			process.env.PORT
+			process.env.WS_PORT
 	)
 })
 
