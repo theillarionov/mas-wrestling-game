@@ -8,11 +8,16 @@ type route = {
 }
 
 type router = {
+	currentRouteName: string
+	previousRouteName: string
 	currentRoute: route
 	previousRoute: route
 	manageRoute(): void
-	init(): void
 	routes: {
 		[routeName: string]: route
 	}
+}
+
+interface PlayerConstructor {
+	id: string
 }

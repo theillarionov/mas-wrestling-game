@@ -54,12 +54,10 @@ wss.on("connection", (socket: WebSocket) => {
 			case SIGNALS.HANDSHAKE:
 				let id = message.id
 
-				if (!id) {
-					id = randomBytes(16).toString("hex")
-					send(SIGNALS.SERVER.GENERATED_ID, { id })
-				}
+				if (!id) id = randomBytes(16).toString("hex")
 
 				new Player({ id, socket })
+				send(SIGNALS.SERVER.CREATED_PLAYER, { id })
 
 				log(SIGNALS.HANDSHAKE)
 

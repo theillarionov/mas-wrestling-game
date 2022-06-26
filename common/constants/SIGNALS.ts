@@ -1,6 +1,6 @@
 export const SIGNALS = {
 	SERVER: {
-		GENERATED_ID: "server-generated-id",
+		CREATED_PLAYER: "server-created-player",
 	},
 	CLIENT: {
 		GENERATED_ANSWER: "client-generated-answer",

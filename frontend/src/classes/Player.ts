@@ -1,8 +1,8 @@
 export class Player {
 	_id: string | null = null
 
-	constructor() {
-		this.id = localStorage.getItem("id")
+	constructor({ id }: PlayerConstructor) {
+		this.id = id
 	}
 
 	get id() {
@@ -17,4 +17,14 @@ export class Player {
 			document.querySelector("#id")!.innerHTML = this._id
 		}
 	}
+
+	static instances: {
+		me: Player | undefined
+		enemy: Player | undefined
+	} = {
+		me: undefined,
+		enemy: undefined,
+	}
 }
+// @ts-ignore
+window.Player = Player
