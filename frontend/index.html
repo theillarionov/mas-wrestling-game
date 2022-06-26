@@ -7,19 +7,50 @@
 		<title>Vite App</title>
 	</head>
 	<body>
-		<span id="id"></span>
-		<button onclick="localStorage.clear()">clear</button><br />
-		<input type="text" id="room-id-join" />
-		<button onclick="joinGame()">joinGame</button><br />
-		<button onclick="hostGame()">hostGame</button>
-		roomId: <span id="room-id"></span>
+		<div class="section section_main-menu">
+			<div style="position: absolute; left: 0; top: 0">
+				<span id="id"></span>
+				<button onclick="localStorage.clear()">clear</button><br />
+			</div>
 
-		<div style="padding-top: 100px; margin-bottom: 100px">
+			<div class="buttons">
+				<a href="#practice">practice</a><br />
+				<a href="#join-game">joinGame</a><br />
+				<a href="#create-game">hostGame</a><br />
+				Your name: <input type="text" /><br />
+				Language:
+				<select>
+					<option>Сахалыы</option>
+					<option>Русский</option>
+				</select>
+			</div>
+		</div>
+		<div class="section section_practice">practice</div>
+		<div class="section section_join-game">
+			Room ID to join: <input type="text" id="room-id-join" />
+		</div>
+		<div class="section section_create-game">
+			Room ID to copy:<span id="room-id"></span>
+		</div>
+		<div class="section section_game">
 			<input id="message" />
 			<button onclick="sendMessage()">sendMessage</button><br />
 			messages:
 			<div id="messages"></div>
+		</div>
 
+		<div
+			style="
+				padding-top: 100px;
+				margin-bottom: 100px;
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+				max-height: 10vh;
+				overflow: auto;
+			"
+		>
 			<div style="background: grey" id="log"></div>
 		</div>
 		<script type="module" src="/src/main.ts"></script>

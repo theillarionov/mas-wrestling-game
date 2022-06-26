@@ -1,5 +1,2 @@
 /// <reference types="vite/client" />
-
-interface RTCPeerConnection {
-	channel: RTCDataChannel
-}
+/// <reference types="./types.d.ts" />

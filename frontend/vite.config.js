@@ -1,8 +1,10 @@
 import { defineConfig } from "vite"
+import { viteSingleFile } from "vite-plugin-singlefile"
 
 const assetFileNames = "game-assets/[name]-[hash]"
 
 export default defineConfig({
+	plugins: [viteSingleFile({})],
 	build: {
 		rollupOptions: {
 			output: {

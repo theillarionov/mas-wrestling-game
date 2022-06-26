@@ -1,14 +1,17 @@
-import "./style.css"
+import "./css/main.css"
 import adapter from "webrtc-adapter"
 import * as PIXI from "pixi.js"
 
 import { SIGNALS } from "../../common/constants/SIGNALS"
 
 import { Player } from "./classes/Player"
-import { socket, send } from "./socket"
+import { socket, send } from "./helpers/signalling"
+import { router } from "./helpers/router"
 
 declare const window: any
 // const isProduction = import.meta.env.MODE === "production"
+
+router.init()
 
 const player = new Player()
 
