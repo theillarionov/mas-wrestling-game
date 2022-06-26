@@ -15,10 +15,13 @@ export const router: router = {
 			router.previousRoute.onLeave()
 		if (router.currentRoute.onEnter) router.currentRoute.onEnter()
 
-		document.querySelector(".section.active")?.classList.remove("active")
-		document.querySelector(".section_" + routeName)?.classList.add("active")
-
 		router.previousRoute = router.routes[routeName]
+
+		let sectionClass = routeName === "practice" ? "game" : routeName
+		document.querySelector(".section.active")?.classList.remove("active")
+		document
+			.querySelector(".section_" + sectionClass)
+			?.classList.add("active")
 	},
 	init() {
 		router.manageRoute()
