@@ -5,12 +5,15 @@ export const SIGNALS = {
 	CLIENT: {
 		GENERATED_ANSWER: "client-generated-answer",
 		SENDS_ANSWER: "client-sends-answer",
+
 		ASKS_TO_JOIN: "client-asks-to-join",
 	},
 	HOST: {
 		GENERATED_OFFER: "host-generated-offer",
 		SENDS_OFFER_AND_CANDIDATES: "host-sends-offer-and-candidates",
+
 		CREATED_ROOM: "host-created-room",
+		CANCELLED_GAME: "host-cancelled-game",
 	},
 	PEER: {
 		GENERATED_ICE_CANDIDATE: "peer-generated-ice-candidate",

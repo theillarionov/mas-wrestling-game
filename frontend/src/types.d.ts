@@ -7,15 +7,19 @@ type route = {
 	onLeave?(): void
 }
 
+type routes = {
+	[routeName: string]: route
+}
+
 type router = {
 	currentRouteName: string
 	previousRouteName: string
 	currentRoute: route
 	previousRoute: route
 	manageRoute(): void
-	routes: {
-		[routeName: string]: route
-	}
+	switchSections(): void
+	callRouteHooks(): void
+	getCurrentRouteName(): string
 }
 
 interface PlayerConstructor {

@@ -1,8 +1,6 @@
 import "./css/main.css"
 /* import adapter from "webrtc-adapter"
 import * as PIXI from "pixi.js" */
-import { router } from "./helpers/router"
-
-// const isProduction = import.meta.env.MODE === "production"
+import { router } from "./engine/router/router"
 
 router.manageRoute()

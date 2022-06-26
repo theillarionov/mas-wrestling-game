@@ -3,7 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"scripts": {
-		"dev": "NODE_ENV=development npx nodemon --inspect=9300 ./src/signalling-server.ts"
+		"dev": "NODE_ENV=development npx nodemon --inspect ./src/signalling-server.ts"
 	},
 	"dependencies": {
 		"dotenv": "^16.0.1",

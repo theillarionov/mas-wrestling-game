@@ -66,6 +66,6 @@ socket.onerror = (e) => {
 	log("error from client", e)
 }
 
-export function send(type: string, payload: object) {
+export function send(type: string, payload: object = {}) {
 	socket.send(JSON.stringify({ type, payload }))
 }
