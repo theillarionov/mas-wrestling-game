@@ -1,6 +1,6 @@
 import { SIGNALS } from "../../../common/constants/SIGNALS"
-import { send } from "./signalling"
-import { log } from "./utils"
+import { send } from "./Signaller"
+import { log } from "./Utils"
 
 export const peerConnection = new RTCPeerConnection({
 	iceServers: [{ urls: ["stun:stun1.l.google.com:19302"] }],

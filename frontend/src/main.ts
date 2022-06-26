@@ -1,6 +1,6 @@
 import "./css/main.css"
 /* import adapter from "webrtc-adapter"
 import * as PIXI from "pixi.js" */
-import { router } from "./engine/router/router"
+import { manageRoute } from "./engine/Router"
 
-router.manageRoute()
+manageRoute()

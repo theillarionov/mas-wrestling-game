@@ -1,7 +1,7 @@
 import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { Player } from "../classes/Player"
-import { log } from "./utils"
-import { peerConnection } from "./webrtc"
+import { log } from "./Utils"
+import { peerConnection } from "./WebRTC"
 
 const socket = new WebSocket(
 	import.meta.env.WS_SCHEMA +
