@@ -1,5 +1,5 @@
 import { log } from "./Utils"
-import { publish } from "./Game"
+import { publish } from "../main"
 
 const socket = new WebSocket(
 	import.meta.env.WS_SCHEMA +
@@ -9,7 +9,6 @@ const socket = new WebSocket(
 )
 
 const connect = new Promise((resolve, reject) => {
-	console.log("connect")
 	socket.onopen = () => {
 		resolve(true)
 	}

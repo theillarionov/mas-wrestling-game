@@ -8,7 +8,7 @@ import { randomBytes } from "crypto"
 import { WebSocketServer } from "ws"
 
 import { ERRORS } from "../../common/constants/ERRORS"
-import { SIGNALS } from "../../common/constants/SIGNALS"
+import { EVENTS } from "../../common/constants/EVENTS"
 
 import { Player, playerId } from "./classes/Player"
 import { Room } from "./classes/Room"
@@ -28,6 +28,8 @@ const server = useHttps
 	: createServerHttp()
 
 const wss = new WebSocketServer({ server })
+
+const SIGNALS = EVENTS.SIGNALS
 
 wss.on("error", (e) => {
 	console.log("wss error", e)

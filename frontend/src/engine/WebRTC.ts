@@ -1,4 +1,4 @@
-import { SIGNALS } from "../../../common/constants/SIGNALS"
+import { EVENTS } from "../../../common/constants/EVENTS"
 import { send } from "./Signaller"
 import { log } from "./Utils"
 
@@ -7,8 +7,8 @@ export const peerConnection = new RTCPeerConnection({
 })
 
 peerConnection.onicecandidate = ({ candidate: iceCandidate }) => {
-	send(SIGNALS.PEER.GENERATED_ICE_CANDIDATE, { iceCandidate })
-	log(SIGNALS.PEER.GENERATED_ICE_CANDIDATE, iceCandidate)
+	send(EVENTS.SIGNALS.PEER.GENERATED_ICE_CANDIDATE, { iceCandidate })
+	log(EVENTS.SIGNALS.PEER.GENERATED_ICE_CANDIDATE, iceCandidate)
 }
 
 export function initDataChannel(channel: RTCDataChannel) {
