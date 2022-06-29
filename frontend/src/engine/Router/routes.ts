@@ -5,6 +5,9 @@ import { log } from "../Utils"
 
 export const routes: routes = {
 	"main-menu": {
+		onEnter() {
+			//send("handshake", { id: "bar" })
+		},
 		url: "main-menu",
 	},
 	"join-game": {
