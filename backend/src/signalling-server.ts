@@ -105,6 +105,9 @@ wss.on("connection", (socket: WebSocket) => {
 				break
 			}
 
+			case SIGNALS.HOST.CANCELLED_GAME: {
+				break
+			}
 			case SIGNALS.HOST.GENERATED_OFFER: {
 				currentPlayer.sdp = message.offer
 
