@@ -1,6 +1,6 @@
 //import { routes } from "./routes"
-import { publish } from "../main"
-import { EVENTS } from "../../../common/constants/EVENTS"
+import { publish } from "../../main"
+import { EVENTS } from "../../../../common/constants/EVENTS"
 
 let currentRoute: string
 let previousRoute: string
@@ -15,8 +15,9 @@ export function manageRoute() {
 	}
 	if (!currentRoute) currentRoute = "main-menu"
 
-	if (previousRoute) publish(EVENTS.ROUTE.LEFT, { name: previousRoute })
-	publish(EVENTS.ROUTE.OPENED, { name: currentRoute })
+	if (previousRoute)
+		publish(EVENTS.ROUTER.ROUTE_LEFT, { name: previousRoute })
+	publish(EVENTS.ROUTER.ROUTE_OPENED, { name: currentRoute })
 	previousRoute = currentRoute
 
 	let sectionClass = currentRoute === "practice" ? "game" : currentRoute
