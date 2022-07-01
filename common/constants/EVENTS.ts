@@ -14,7 +14,6 @@ export const EVENTS = {
 			SENDS_OFFER_AND_CANDIDATES: "host-sends-offer-and-candidates",
 
 			CREATED_ROOM: "host-created-room",
-			CANCELLED_GAME: "host-cancelled-game",
 		},
 		PEER: {
 			GENERATED_ICE_CANDIDATE: "peer-generated-ice-candidate",

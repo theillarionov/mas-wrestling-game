@@ -1,9 +1,9 @@
 //import { routes } from "./routes"
-import { publish } from "../../main"
-import { EVENTS } from "../../../../common/constants/EVENTS"
+import { publish } from "../engine/EventManager"
+import { EVENTS } from "../../../common/constants/EVENTS"
 
-let currentRoute: string
-let previousRoute: string
+let currentRoute = ""
+let previousRoute = ""
 
 const routes = ["main-menu", "join-game", "create-game", "game", "practice"]
 
@@ -24,5 +24,3 @@ export function manageRoute() {
 	document.querySelector(".section.active")?.classList.remove("active")
 	document.querySelector(".section_" + sectionClass)?.classList.add("active")
 }
-
-window.addEventListener("hashchange", manageRoute)

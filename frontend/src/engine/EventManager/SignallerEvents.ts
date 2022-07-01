@@ -1,6 +1,6 @@
 import { EVENTS } from "../../../../common/constants/EVENTS"
 import { peerConnection } from "../WebRTC"
-import { send } from "."
+import { sendSignal } from "../Signaller"
 import { log } from "../Utils"
 
 const SIGNALS = EVENTS.SIGNALS
@@ -22,7 +22,7 @@ export const events = {
 		const answer = await peerConnection.createAnswer()
 		peerConnection.setLocalDescription(answer)
 
-		send(SIGNALS.CLIENT.GENERATED_ANSWER, { answer })
+		sendSignal(SIGNALS.CLIENT.GENERATED_ANSWER, { answer })
 		log(SIGNALS.HOST.SENDS_OFFER_AND_CANDIDATES)
 	},
 

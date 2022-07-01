@@ -1,5 +1,5 @@
 import { peerConnection, initDataChannel } from "../WebRTC"
-import { send } from "../Signaller"
+import { sendSignal } from "../Signaller"
 import { log } from "../Utils"
 import { EVENTS } from "../../../../common/constants/EVENTS"
 
@@ -13,13 +13,13 @@ export const events = {
 
 				peerConnection.setLocalDescription(offer)
 
-				send(EVENTS.SIGNALS.HOST.GENERATED_OFFER, { offer })
+				sendSignal(EVENTS.SIGNALS.HOST.GENERATED_OFFER, { offer })
 				log(EVENTS.SIGNALS.HOST.GENERATED_OFFER)
 				break
 			case "join-game":
 				;(<HTMLElement>document.querySelector("#join-room")!).onclick =
 					() => {
-						send(EVENTS.SIGNALS.CLIENT.ASKS_TO_JOIN, {
+						sendSignal(EVENTS.SIGNALS.CLIENT.ASKS_TO_JOIN, {
 							roomId: (<HTMLInputElement>(
 								document.querySelector("#room-id-join")
 							)).value,
