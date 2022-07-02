@@ -2,6 +2,7 @@ import { peerConnection, initDataChannel } from "../WebRTC"
 import { sendSignal } from "../Signaller"
 import { log } from "../Utils"
 import { EVENTS } from "../../../../common/constants/EVENTS"
+import { currentRoute } from "../Router"
 
 export const events = {
 	async [EVENTS.ROUTER.ROUTE_OPENED]({ name }: any) {
@@ -44,6 +45,14 @@ export const events = {
 		console.log("router opened " + name)
 	},
 	[EVENTS.ROUTER.ROUTE_LEFT]({ name }: any) {
+		switch (name) {
+			case "create-game":
+				if (currentRoute !== "game") {
+					sendSignal(EVENTS.SIGNALS.HOST.CANCELLED_ROOM)
+				}
+				break
+		}
+
 		console.log("router left " + name)
 	},
 }

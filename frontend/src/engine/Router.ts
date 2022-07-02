@@ -2,10 +2,10 @@
 import { publish } from "../engine/EventManager"
 import { EVENTS } from "../../../common/constants/EVENTS"
 
-let currentRoute = ""
-let previousRoute = ""
-
 const routes = ["main-menu", "join-game", "create-game", "game", "practice"]
+
+export let currentRoute = ""
+export let previousRoute = ""
 
 export function manageRoute() {
 	currentRoute = ""
