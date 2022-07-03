@@ -1,3 +1,5 @@
+import { EventBus } from "./EventBus"
+
 import { RouteCreateGame } from "../routes/RouteCreateGame"
 import { RouteMainMenu } from "../routes/RouteMainMenu"
 import { RoutePractice } from "../routes/RoutePractice"
@@ -8,13 +10,6 @@ const routes: Routes = {
 	[RoutePractice.url]: RoutePractice,
 	[RouteJoinGame.url]: RouteJoinGame,
 	[RouteCreateGame.url]: RouteCreateGame,
-}
-
-for (const url in routes) {
-	if (routes[url].onInit) routes[url].onInit?.()
-	if (routes[url].subscriptions) {
-		// привязать события
-	}
 }
 
 let currentRoute: Route
@@ -37,7 +32,16 @@ function manageRoute() {
 	previousRoute = currentRoute
 }
 
-export function init() {
+export function initRouter() {
+	for (const url in routes) {
+		if (routes[url].onInit) routes[url].onInit?.()
+		if (routes[url].subscriptions) {
+			routes[url].subscriptions.forEach((subscription: any) => {
+				EventBus.on(subscription.type, subscription.listener)
+			})
+		}
+	}
+
 	manageRoute()
 	window.addEventListener("hashchange", manageRoute)
 }

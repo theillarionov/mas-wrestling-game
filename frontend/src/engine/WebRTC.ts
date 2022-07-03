@@ -1,6 +1,7 @@
 import { EVENTS } from "../../../common/constants/EVENTS"
 import { sendSignal } from "./Signaller"
 import { log } from "./Utils"
+import { EventBus } from "./EventBus"
 
 export const peerConnection = new RTCPeerConnection({
 	iceServers: [{ urls: ["stun:stun1.l.google.com:19302"] }],
@@ -10,6 +11,17 @@ peerConnection.onicecandidate = ({ candidate: iceCandidate }) => {
 	sendSignal(EVENTS.SIGNALS.PEER.GENERATED_ICE_CANDIDATE, { iceCandidate })
 	log(EVENTS.SIGNALS.PEER.GENERATED_ICE_CANDIDATE, iceCandidate)
 }
+
+EventBus.on(EVENTS.SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, ({ detail }) => {
+	const { iceCandidate } = detail
+	peerConnection.addIceCandidate(iceCandidate)
+	log(EVENTS.SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, iceCandidate)
+})
+
+EventBus.on(EVENTS.SIGNALS.ERROR, ({ detail }) => {
+	const { text } = detail
+	log(EVENTS.SIGNALS.ERROR, text)
+})
 
 export function initDataChannel(channel: RTCDataChannel) {
 	channel.onmessage = (e) => {

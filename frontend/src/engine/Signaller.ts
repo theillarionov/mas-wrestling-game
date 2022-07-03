@@ -1,5 +1,5 @@
 import { log } from "./Utils"
-import { publish } from "../engine/EventManager"
+import { EventBus } from "./EventBus"
 import { EVENTS } from "../../../common/constants/EVENTS"
 import { Player } from "./Player"
 
@@ -38,7 +38,7 @@ const connect = new Promise((resolve) => {
 			resolve(true)
 			return
 		}
-		publish(type, message)
+		EventBus.emit(type, message)
 	}
 })
 

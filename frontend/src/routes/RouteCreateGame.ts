@@ -19,5 +19,22 @@ export const RouteCreateGame: Route = {
 		sendSignal(EVENTS.SIGNALS.HOST.GENERATED_OFFER, { offer })
 		log(EVENTS.SIGNALS.HOST.GENERATED_OFFER)
 	},
-	subscriptions: [],
+	subscriptions: [
+		{
+			type: EVENTS.SIGNALS.HOST.CREATED_ROOM,
+			listener: ({ detail }: any) => {
+				const roomId = detail.roomId
+
+				document.querySelector("#room-id")!.innerHTML = roomId
+			},
+		},
+		{
+			type: EVENTS.SIGNALS.CLIENT.SENDS_ANSWER,
+			listener: ({ detail }: any) => {
+				const { answer } = detail
+				peerConnection.setRemoteDescription(answer)
+				log(EVENTS.SIGNALS.CLIENT.SENDS_ANSWER)
+			},
+		},
+	],
 }

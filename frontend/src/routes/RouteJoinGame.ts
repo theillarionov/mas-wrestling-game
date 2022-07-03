@@ -1,6 +1,7 @@
 import { EVENTS } from "../../../common/constants/EVENTS"
 import { peerConnection, initDataChannel } from "../engine/WebRTC"
 import { sendSignal } from "../engine/Signaller"
+import { log } from "../engine/Utils"
 
 export const RouteJoinGame: Route = {
 	url: "join-game",
@@ -20,5 +21,23 @@ export const RouteJoinGame: Route = {
 	onEnter() {
 		document.querySelector(".section_join-game")?.classList.add("active")
 	},
-	subscriptions: [],
+	subscriptions: [
+		{
+			type: EVENTS.SIGNALS.HOST.SENDS_OFFER_AND_CANDIDATES,
+			listener: async ({ detail }: any) => {
+				const { offer, iceCandidates } = detail
+				await peerConnection.setRemoteDescription(offer)
+
+				iceCandidates.forEach((iceCandidate: RTCIceCandidate) => {
+					peerConnection.addIceCandidate(iceCandidate)
+				})
+
+				const answer = await peerConnection.createAnswer()
+				peerConnection.setLocalDescription(answer)
+
+				sendSignal(EVENTS.SIGNALS.CLIENT.GENERATED_ANSWER, { answer })
+				log(EVENTS.SIGNALS.HOST.SENDS_OFFER_AND_CANDIDATES)
+			},
+		},
+	],
 }

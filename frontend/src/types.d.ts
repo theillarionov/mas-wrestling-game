@@ -11,7 +11,7 @@ type Route = {
 	onInit?(): void
 	onEnter?(previousRoute?: Route): void
 	onLeave?(nextRoute?: Route): void
-	subscriptions?: []
+	subscriptions?: array
 }
 
 interface PlayerConstructor {
