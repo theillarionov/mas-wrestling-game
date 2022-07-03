@@ -1,6 +1,3 @@
-//import { routes } from "./routes"
-/* import { publish } from "../engine/EventManager"
-import { EVENTS } from "../../../common/constants/EVENTS" */
 import { RouteCreateGame } from "../routes/RouteCreateGame"
 import { RouteMainMenu } from "../routes/RouteMainMenu"
 import { RoutePractice } from "../routes/RoutePractice"
@@ -20,10 +17,10 @@ for (const url in routes) {
 	}
 }
 
-export let currentRoute: Route
-export let previousRoute: Route
+let currentRoute: Route
+let previousRoute: Route
 
-export function manageRoute() {
+function manageRoute() {
 	let currentRouteName = ""
 	if (location.hash) {
 		const hashRoute = location.hash?.replace("#", "")
@@ -38,8 +35,9 @@ export function manageRoute() {
 		previousRoute.onLeave(currentRoute)
 	if (currentRoute.onEnter) currentRoute.onEnter(previousRoute)
 	previousRoute = currentRoute
+}
 
-	/* let sectionClass = currentRoute === "practice" ? "game" : currentRoute
-	document.querySelector(".section.active")?.classList.remove("active")
-	document.querySelector(".section_" + sectionClass)?.classList.add("active") */
+export function init() {
+	manageRoute()
+	window.addEventListener("hashchange", manageRoute)
 }

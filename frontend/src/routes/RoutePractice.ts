@@ -1,6 +1,6 @@
 export const RoutePractice: Route = {
 	url: "practice",
-	onEnter(previousRoute) {
+	onEnter() {
 		document.querySelector(".section_game")?.classList.add("active")
 	},
 }

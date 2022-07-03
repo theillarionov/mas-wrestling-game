@@ -1,4 +1,4 @@
-import { peerConnection, initDataChannel } from "../engine/WebRTC"
+import { peerConnection } from "../engine/WebRTC"
 
 export const RouteGame: Route = {
 	url: "game",
