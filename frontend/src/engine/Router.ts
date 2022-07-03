@@ -1,26 +1,45 @@
 //import { routes } from "./routes"
-import { publish } from "../engine/EventManager"
-import { EVENTS } from "../../../common/constants/EVENTS"
+/* import { publish } from "../engine/EventManager"
+import { EVENTS } from "../../../common/constants/EVENTS" */
+import { RouteCreateGame } from "../routes/RouteCreateGame"
+import { RouteMainMenu } from "../routes/RouteMainMenu"
+import { RoutePractice } from "../routes/RoutePractice"
+import { RouteJoinGame } from "../routes/RouteJoinGame"
 
-const routes = ["main-menu", "join-game", "create-game", "game", "practice"]
+const routes: Routes = {
+	[RouteMainMenu.url]: RouteMainMenu,
+	[RoutePractice.url]: RoutePractice,
+	[RouteJoinGame.url]: RouteJoinGame,
+	[RouteCreateGame.url]: RouteCreateGame,
+}
 
-export let currentRoute = ""
-export let previousRoute = ""
+for (const url in routes) {
+	if (routes[url].onInit) routes[url].onInit?.()
+	if (routes[url].subscriptions) {
+		// привязать события
+	}
+}
+
+export let currentRoute: Route
+export let previousRoute: Route
 
 export function manageRoute() {
-	currentRoute = ""
+	let currentRouteName = ""
 	if (location.hash) {
 		const hashRoute = location.hash?.replace("#", "")
-		if (routes.indexOf(hashRoute) > -1) currentRoute = hashRoute
+		if (routes[hashRoute]) currentRouteName = hashRoute
 	}
-	if (!currentRoute) currentRoute = "main-menu"
+	if (!currentRouteName) currentRouteName = "main-menu"
+	currentRoute = routes[currentRouteName]
 
-	if (previousRoute)
-		publish(EVENTS.ROUTER.ROUTE_LEFT, { name: previousRoute })
-	publish(EVENTS.ROUTER.ROUTE_OPENED, { name: currentRoute })
+	document.querySelector(".section.active")?.classList.remove("active")
+
+	if (previousRoute && previousRoute.onLeave)
+		previousRoute.onLeave(currentRoute)
+	if (currentRoute.onEnter) currentRoute.onEnter(previousRoute)
 	previousRoute = currentRoute
 
-	let sectionClass = currentRoute === "practice" ? "game" : currentRoute
+	/* let sectionClass = currentRoute === "practice" ? "game" : currentRoute
 	document.querySelector(".section.active")?.classList.remove("active")
-	document.querySelector(".section_" + sectionClass)?.classList.add("active")
+	document.querySelector(".section_" + sectionClass)?.classList.add("active") */
 }

@@ -6,8 +6,9 @@ import { currentRoute } from "../Router"
 
 export const events = {
 	async [EVENTS.ROUTER.ROUTE_OPENED]({ name }: any) {
-		switch (name) {
-			case "create-game":
+		switch (
+			name
+			/* case "create-game":
 				initDataChannel(peerConnection.createDataChannel("game"))
 
 				const offer = await peerConnection.createOffer()
@@ -16,8 +17,8 @@ export const events = {
 
 				sendSignal(EVENTS.SIGNALS.HOST.GENERATED_OFFER, { offer })
 				log(EVENTS.SIGNALS.HOST.GENERATED_OFFER)
-				break
-			case "join-game":
+				break */
+			/* case "join-game":
 				;(<HTMLElement>document.querySelector("#join-room")!).onclick =
 					() => {
 						sendSignal(EVENTS.SIGNALS.CLIENT.ASKS_TO_JOIN, {
@@ -30,8 +31,8 @@ export const events = {
 							initDataChannel(e.channel)
 						}
 					}
-				break
-			case "game":
+				break */
+			/* 	case "game":
 				;(<HTMLElement>(
 					document.querySelector("#send-message")!
 				)).onclick = () => {
@@ -40,11 +41,12 @@ export const events = {
 					)).value
 					peerConnection.channel.send(message)
 				}
-				break
+				break */
+		) {
 		}
 		console.log("router opened " + name)
 	},
-	[EVENTS.ROUTER.ROUTE_LEFT]({ name }: any) {
+	/* [EVENTS.ROUTER.ROUTE_LEFT]({ name }: any) {
 		switch (name) {
 			case "create-game":
 				if (currentRoute !== "game") {
@@ -54,5 +56,5 @@ export const events = {
 		}
 
 		console.log("router left " + name)
-	},
+	}, */
 }

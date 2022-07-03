@@ -2,8 +2,16 @@ interface RTCPeerConnection {
 	channel: RTCDataChannel
 }
 
-type routes = {
-	[routeName: string]: route
+type Routes = {
+	[routeName: string]: Route
+}
+
+type Route = {
+	url: string
+	onInit?(): void
+	onEnter?(previousRoute?: Route): void
+	onLeave?(nextRoute?: Route): void
+	subscriptions?: []
 }
 
 interface PlayerConstructor {
