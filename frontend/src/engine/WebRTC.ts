@@ -18,11 +18,6 @@ EventBus.on(EVENTS.SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, ({ detail }) => {
 	log(EVENTS.SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, iceCandidate)
 })
 
-EventBus.on(EVENTS.SIGNALS.ERROR, ({ detail }) => {
-	const { text } = detail
-	log(EVENTS.SIGNALS.ERROR, text)
-})
-
 export function initDataChannel(channel: RTCDataChannel) {
 	channel.onmessage = (e) => {
 		log("message", e)

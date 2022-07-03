@@ -10,7 +10,7 @@ export const EVENTS = {
 			ASKS_TO_JOIN: "client-asks-to-join",
 		},
 		HOST: {
-			GENERATED_OFFER: "host-generated-offer",
+			WANTS_TO_CREATE_ROOM: "host-wants-to-create-room",
 			SENDS_OFFER_AND_CANDIDATES: "host-sends-offer-and-candidates",
 
 			CREATED_ROOM: "host-created-room",

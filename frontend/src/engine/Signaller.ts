@@ -37,6 +37,9 @@ const connect = new Promise((resolve) => {
 			log(EVENTS.SIGNALS.SERVER.CREATED_PLAYER, message.id)
 			resolve(true)
 			return
+		} else if (type === EVENTS.SIGNALS.ERROR) {
+			log(EVENTS.SIGNALS.ERROR, message.text)
+			return
 		}
 		EventBus.emit(type, message)
 	}

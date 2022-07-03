@@ -21,8 +21,3 @@ interface PlayerConstructor {
 interface GameConstructor {
 	roomId: string
 }
-
-interface Signaller {
-	socket: WebSocket
-	init(): void
-}

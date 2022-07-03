@@ -107,17 +107,14 @@ wss.on("connection", (socket: WebSocket) => {
 				break
 			}
 
-			case SIGNALS.HOST.CANCELLED_GAME: {
-				break
-			}
-			case SIGNALS.HOST.GENERATED_OFFER: {
+			case SIGNALS.HOST.WANTS_TO_CREATE_ROOM: {
 				currentPlayer.sdp = message.offer
 
 				const room = new Room({ hostId: currentPlayer.id })
 
 				send(SIGNALS.HOST.CREATED_ROOM, { roomId: room.id })
 
-				log(SIGNALS.HOST.GENERATED_OFFER)
+				log(SIGNALS.HOST.WANTS_TO_CREATE_ROOM)
 				break
 			}
 

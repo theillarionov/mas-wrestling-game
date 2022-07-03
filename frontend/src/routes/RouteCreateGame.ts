@@ -16,8 +16,8 @@ export const RouteCreateGame: Route = {
 
 		peerConnection.setLocalDescription(offer)
 
-		sendSignal(EVENTS.SIGNALS.HOST.GENERATED_OFFER, { offer })
-		log(EVENTS.SIGNALS.HOST.GENERATED_OFFER)
+		sendSignal(EVENTS.SIGNALS.HOST.WANTS_TO_CREATE_ROOM, { offer })
+		log(EVENTS.SIGNALS.HOST.WANTS_TO_CREATE_ROOM)
 	},
 	subscriptions: [
 		{
@@ -26,6 +26,7 @@ export const RouteCreateGame: Route = {
 				const roomId = detail.roomId
 
 				document.querySelector("#room-id")!.innerHTML = roomId
+				log(EVENTS.SIGNALS.HOST.CREATED_ROOM)
 			},
 		},
 		{
