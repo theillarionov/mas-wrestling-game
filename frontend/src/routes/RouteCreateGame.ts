@@ -1,4 +1,4 @@
-import { EVENTS } from "../../../common/constants/EVENTS"
+import { SIGNALS } from "../../../common/constants/SIGNALS"
 
 import { peerConnection, initDataChannel } from "../engine/WebRTC"
 import { sendSignal } from "../engine/Signaller"
@@ -17,36 +17,34 @@ export const RouteCreateGame: Route = {
 
 		peerConnection.setLocalDescription(offer)
 
-		sendSignal(EVENTS.SIGNALS.HOST.WANTS_TO_CREATE_ROOM, { offer })
-		log(EVENTS.SIGNALS.HOST.WANTS_TO_CREATE_ROOM)
+		sendSignal(SIGNALS.PEER.GENERATED_OFFER, { offer })
+		log(SIGNALS.PEER.GENERATED_OFFER)
 	},
 	onLeave(nextRoute) {
 		if (nextRoute.url !== "game") {
-			sendSignal(EVENTS.SIGNALS.HOST.CANCELLED_ROOM, {
-				roomId: Game.instance?.roomId,
-			})
+			sendSignal(SIGNALS.PEER.CANCELLED_ROOM)
 			Game.delete()
-			log(EVENTS.SIGNALS.HOST.CANCELLED_ROOM)
+			log(SIGNALS.PEER.CANCELLED_ROOM)
 		}
 	},
 	subscriptions: [
-		{
-			type: EVENTS.SIGNALS.HOST.CREATED_ROOM,
+		/* {
+			type: SIGNALS.HOST.CREATED_ROOM,
 			listener: ({ detail }: any) => {
 				const roomId = detail.roomId
 
 				new Game({ roomId })
 
 				document.querySelector("#room-id")!.innerHTML = roomId
-				log(EVENTS.SIGNALS.HOST.CREATED_ROOM)
+				log(SIGNALS.HOST.CREATED_ROOM)
 			},
-		},
+		}, */
 		{
-			type: EVENTS.SIGNALS.CLIENT.SENDS_ANSWER,
+			type: SIGNALS.REMOTE.SENDS_ANSWER,
 			listener: ({ detail }: any) => {
 				const { answer } = detail
 				peerConnection.setRemoteDescription(answer)
-				log(EVENTS.SIGNALS.CLIENT.SENDS_ANSWER)
+				log(SIGNALS.REMOTE.SENDS_ANSWER)
 			},
 		},
 	],

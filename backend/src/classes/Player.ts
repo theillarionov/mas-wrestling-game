@@ -1,4 +1,4 @@
-import { Room } from "./Room"
+import { randomBytes } from "crypto"
 
 export const playerId = Symbol("playerId")
 
@@ -9,7 +9,6 @@ export class Player {
 	sdp: string | null = null
 	iceCandidates: RTCIceCandidate[] = []
 	enemyId: string | null = null
-	roomId: string | null = null
 
 	constructor({ id, socket }: PlayerConstructor) {
 		this.id = id
@@ -28,13 +27,14 @@ export class Player {
 		return this.enemyId ? Player.instances.get(this.enemyId) : undefined
 	}
 
-	get room(): Room | undefined {
-		return this.roomId ? Room.instances.get(this.roomId) : undefined
-	}
-
 	static instances: Map<string, Player> = new Map()
 
 	static find(id: string): Player | undefined {
 		return Player.instances.get(id)
+	}
+
+	static generateId(): string {
+		const id = randomBytes(4).toString("base64url")
+		return Player.instances.has(id) ? Player.generateId() : id
 	}
 }

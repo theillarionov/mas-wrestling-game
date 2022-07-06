@@ -1,4 +1,4 @@
-import { EVENTS } from "../../../common/constants/EVENTS"
+import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { sendSignal } from "./Signaller"
 import { log } from "./Utils"
 import { EventBus } from "./EventBus"
@@ -8,14 +8,14 @@ export const peerConnection = new RTCPeerConnection({
 })
 
 peerConnection.onicecandidate = ({ candidate: iceCandidate }) => {
-	sendSignal(EVENTS.SIGNALS.PEER.GENERATED_ICE_CANDIDATE, { iceCandidate })
-	log(EVENTS.SIGNALS.PEER.GENERATED_ICE_CANDIDATE, iceCandidate)
+	sendSignal(SIGNALS.PEER.GENERATED_ICE_CANDIDATE, { iceCandidate })
+	log(SIGNALS.PEER.GENERATED_ICE_CANDIDATE, iceCandidate)
 }
 
-EventBus.on(EVENTS.SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, ({ detail }) => {
+EventBus.on(SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, ({ detail }) => {
 	const { iceCandidate } = detail
 	peerConnection.addIceCandidate(iceCandidate)
-	log(EVENTS.SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, iceCandidate)
+	log(SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, iceCandidate)
 })
 
 export function initDataChannel(channel: RTCDataChannel) {

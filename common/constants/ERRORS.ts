@@ -1,7 +1,4 @@
 export const ERRORS = {
-	ROOM_NOT_FOUND: {
-		en: "We can't find game.",
-	},
 	PLAYER_NOT_FOUND: {
 		en: "We can't find requested player.",
 	},

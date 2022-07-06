@@ -1,6 +1,6 @@
 import { log } from "./Utils"
 import { EventBus } from "./EventBus"
-import { EVENTS } from "../../../common/constants/EVENTS"
+import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { Player } from "./Player"
 
 const socket = new WebSocket(
@@ -13,7 +13,7 @@ const socket = new WebSocket(
 socket.onopen = () => {
 	socket.send(
 		JSON.stringify({
-			type: EVENTS.SIGNALS.HANDSHAKE,
+			type: SIGNALS.HANDSHAKE,
 			payload: { id: localStorage.getItem("id") },
 		})
 	)
@@ -32,13 +32,13 @@ const connect = new Promise((resolve) => {
 		const jsonData = JSON.parse(data)
 		const type = jsonData.type
 		const message = jsonData.payload
-		if (type === EVENTS.SIGNALS.SERVER.CREATED_PLAYER) {
+		if (type === SIGNALS.SERVER.CREATED_PLAYER) {
 			Player.instances.me = new Player({ id: message.id })
-			log(EVENTS.SIGNALS.SERVER.CREATED_PLAYER, message.id)
+			log(SIGNALS.SERVER.CREATED_PLAYER, message.id)
 			resolve(true)
 			return
-		} else if (type === EVENTS.SIGNALS.ERROR) {
-			log(EVENTS.SIGNALS.ERROR, message.text)
+		} else if (type === SIGNALS.ERROR) {
+			log(SIGNALS.ERROR, message.text)
 			return
 		}
 		EventBus.emit(type, message)

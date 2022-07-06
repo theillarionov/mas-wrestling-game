@@ -4,14 +4,12 @@ import path from "path"
 import { readFileSync } from "fs"
 import { createServer as createServerHttp } from "http"
 import { createServer as createServerHttps } from "https"
-import { randomBytes } from "crypto"
 import { WebSocketServer } from "ws"
 
 import { ERRORS } from "../../common/constants/ERRORS"
-import { EVENTS } from "../../common/constants/EVENTS"
+import { SIGNALS } from "../../common/constants/SIGNALS"
 
 import { Player, playerId } from "./classes/Player"
-import { Room } from "./classes/Room"
 
 dotenv.config({
 	path: path.join(__dirname, "../../common/env/.env." + process.env.NODE_ENV),
@@ -28,8 +26,6 @@ const server = useHttps
 	: createServerHttp()
 
 const wss = new WebSocketServer({ server })
-
-const SIGNALS = EVENTS.SIGNALS
 
 wss.on("error", (e) => {
 	console.log("wss error", e)
@@ -56,7 +52,7 @@ wss.on("connection", (socket: WebSocket) => {
 			case SIGNALS.HANDSHAKE:
 				let id = message.id
 
-				if (!id) id = randomBytes(16).toString("hex")
+				if (!id) id = Player.generateId()
 
 				new Player({ id, socket })
 				send(SIGNALS.SERVER.CREATED_PLAYER, { id })
@@ -65,15 +61,8 @@ wss.on("connection", (socket: WebSocket) => {
 
 				break
 
-			case SIGNALS.CLIENT.WANTS_TO_JOIN: {
-				const room = Room.find(message.roomId)
-
-				if (!room) {
-					send(SIGNALS.ERROR, { text: ERRORS.ROOM_NOT_FOUND.en })
-					return
-				}
-
-				const host = room.host
+			case SIGNALS.PEER.WANTS_TO_JOIN: {
+				const host = Player.find(message.hostId)
 
 				if (!host) {
 					send(SIGNALS.ERROR, { text: ERRORS.PLAYER_NOT_FOUND.en })
@@ -86,44 +75,34 @@ wss.on("connection", (socket: WebSocket) => {
 				currentPlayer.enemyId = host.id
 				host.enemyId = currentPlayer.id
 
-				room.clientId = currentPlayer.id
-
-				send(SIGNALS.HOST.SENDS_OFFER_AND_CANDIDATES, {
+				send(SIGNALS.REMOTE.SENDS_OFFER_AND_CANDIDATES, {
 					offer: host.sdp,
 					iceCandidates: host.iceCandidates,
 				})
 
 				break
 			}
-			case SIGNALS.CLIENT.GENERATED_ANSWER: {
+			case SIGNALS.PEER.GENERATED_ANSWER: {
 				currentPlayer.sdp = message.answer
 
 				send(
-					SIGNALS.CLIENT.SENDS_ANSWER,
+					SIGNALS.REMOTE.SENDS_ANSWER,
 					{ answer: message.answer },
 					currentPlayer.enemy!.socket
 				)
-				log(SIGNALS.CLIENT.GENERATED_ANSWER)
+				log(SIGNALS.PEER.GENERATED_ANSWER)
 				break
 			}
 
-			case SIGNALS.HOST.WANTS_TO_CREATE_ROOM: {
+			case SIGNALS.PEER.GENERATED_OFFER: {
 				currentPlayer.sdp = message.offer
 
-				const room = new Room({ hostId: currentPlayer.id })
-
-				send(SIGNALS.HOST.CREATED_ROOM, { roomId: room.id })
-
-				log(SIGNALS.HOST.WANTS_TO_CREATE_ROOM)
+				log(SIGNALS.PEER.GENERATED_OFFER)
 				break
 			}
 
-			case SIGNALS.HOST.CANCELLED_ROOM: {
-				const room = Room.find(message.roomId)
-
-				room?.delete()
-
-				log(SIGNALS.HOST.CANCELLED_ROOM)
+			case SIGNALS.PEER.CANCELLED_ROOM: {
+				log(SIGNALS.PEER.CANCELLED_ROOM)
 				break
 			}
 
@@ -165,5 +144,3 @@ server.listen(process.env.WS_PORT, () => {
 
 //@ts-ignore
 global.players = Player.instances
-//@ts-ignore
-global.rooms = Room.instances

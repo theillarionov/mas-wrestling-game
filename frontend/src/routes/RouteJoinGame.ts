@@ -1,4 +1,4 @@
-import { EVENTS } from "../../../common/constants/EVENTS"
+import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { peerConnection, initDataChannel } from "../engine/WebRTC"
 import { sendSignal } from "../engine/Signaller"
 import { log } from "../engine/Utils"
@@ -7,8 +7,8 @@ export const RouteJoinGame: Route = {
 	url: "join-game",
 	onInit() {
 		;(<HTMLElement>document.querySelector("#join-room")!).onclick = () => {
-			sendSignal(EVENTS.SIGNALS.CLIENT.WANTS_TO_JOIN, {
-				roomId: (<HTMLInputElement>(
+			sendSignal(SIGNALS.PEER.WANTS_TO_JOIN, {
+				hostId: (<HTMLInputElement>(
 					document.querySelector("#room-id-join")
 				)).value,
 			})
@@ -23,7 +23,7 @@ export const RouteJoinGame: Route = {
 	},
 	subscriptions: [
 		{
-			type: EVENTS.SIGNALS.HOST.SENDS_OFFER_AND_CANDIDATES,
+			type: SIGNALS.REMOTE.SENDS_OFFER_AND_CANDIDATES,
 			listener: async ({ detail }: any) => {
 				const { offer, iceCandidates } = detail
 				await peerConnection.setRemoteDescription(offer)
@@ -35,8 +35,8 @@ export const RouteJoinGame: Route = {
 				const answer = await peerConnection.createAnswer()
 				peerConnection.setLocalDescription(answer)
 
-				sendSignal(EVENTS.SIGNALS.CLIENT.GENERATED_ANSWER, { answer })
-				log(EVENTS.SIGNALS.HOST.SENDS_OFFER_AND_CANDIDATES)
+				sendSignal(SIGNALS.PEER.GENERATED_ANSWER, { answer })
+				log(SIGNALS.REMOTE.SENDS_OFFER_AND_CANDIDATES)
 			},
 		},
 	],
