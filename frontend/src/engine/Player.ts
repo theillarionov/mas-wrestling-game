@@ -14,7 +14,7 @@ export class Player {
 			this._id = value
 
 			localStorage.setItem("id", this._id)
-			document.querySelector("#id")!.innerHTML = this._id
+			document.querySelector("#game-id")!.innerHTML = this._id
 		}
 	}
 

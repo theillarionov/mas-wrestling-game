@@ -1,9 +1,10 @@
-import { EventBus } from "./EventBus"
+import { EventBus } from "./Events"
 
 import { RouteCreateGame } from "../routes/RouteCreateGame"
 import { RouteMainMenu } from "../routes/RouteMainMenu"
 import { RoutePractice } from "../routes/RoutePractice"
 import { RouteJoinGame } from "../routes/RouteJoinGame"
+import { RouteGame } from "../routes/RouteGame"
 
 let currentRoute: Route
 let previousRoute: Route
@@ -13,6 +14,8 @@ const routes: Routes = {
 	[RoutePractice.url]: RoutePractice,
 	[RouteJoinGame.url]: RouteJoinGame,
 	[RouteCreateGame.url]: RouteCreateGame,
+	[RouteCreateGame.url]: RouteCreateGame,
+	[RouteGame.url]: RouteGame,
 }
 
 for (const url in routes) {
@@ -39,6 +42,10 @@ export function manageRoute() {
 		previousRoute.onLeave(currentRoute)
 	if (currentRoute.onEnter) currentRoute.onEnter(previousRoute)
 	previousRoute = currentRoute
+}
+
+export function changeRouteTo(routeUrl: string) {
+	location.hash = routeUrl
 }
 
 window.addEventListener("hashchange", manageRoute)

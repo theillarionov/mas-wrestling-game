@@ -9,6 +9,7 @@ export class Player {
 	sdp: string | null = null
 	iceCandidates: RTCIceCandidate[] = []
 	enemyId: string | null = null
+	accepting_connections = false
 
 	constructor({ id, socket }: PlayerConstructor) {
 		this.id = id

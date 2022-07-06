@@ -67,8 +67,10 @@ wss.on("connection", (socket: WebSocket) => {
 				if (!host) {
 					send(SIGNALS.ERROR, { text: ERRORS.PLAYER_NOT_FOUND.en })
 					return
-				} else if (host.enemyId) {
-					send(SIGNALS.ERROR, { text: ERRORS.PLAYER_IN_GAME.en })
+				} else if (!host.accepting_connections) {
+					send(SIGNALS.ERROR, {
+						text: ERRORS.PLAYER_NOT_ACCEPTING_CONNECTIONS.en,
+					})
 					return
 				}
 
@@ -94,15 +96,18 @@ wss.on("connection", (socket: WebSocket) => {
 				break
 			}
 
-			case SIGNALS.PEER.GENERATED_OFFER: {
+			case SIGNALS.PEER.STARTED_ACCEPTING_CONNECTIONS: {
 				currentPlayer.sdp = message.offer
+				currentPlayer.accepting_connections = true
 
-				log(SIGNALS.PEER.GENERATED_OFFER)
+				log(SIGNALS.PEER.STARTED_ACCEPTING_CONNECTIONS)
 				break
 			}
 
-			case SIGNALS.PEER.CANCELLED_ROOM: {
-				log(SIGNALS.PEER.CANCELLED_ROOM)
+			case SIGNALS.PEER.STOPPED_ACCEPTING_CONNECTIONS: {
+				currentPlayer.accepting_connections = false
+
+				log(SIGNALS.PEER.STOPPED_ACCEPTING_CONNECTIONS)
 				break
 			}
 

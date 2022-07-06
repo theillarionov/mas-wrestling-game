@@ -1,5 +1,5 @@
 import { log } from "./Utils"
-import { EventBus } from "./EventBus"
+import { EventBus } from "./Events"
 import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { Player } from "./Player"
 
@@ -36,9 +36,6 @@ const connect = new Promise((resolve) => {
 			Player.instances.me = new Player({ id: message.id })
 			log(SIGNALS.SERVER.CREATED_PLAYER, message.id)
 			resolve(true)
-			return
-		} else if (type === SIGNALS.ERROR) {
-			log(SIGNALS.ERROR, message.text)
 			return
 		}
 		EventBus.emit(type, message)

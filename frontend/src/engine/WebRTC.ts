@@ -1,7 +1,7 @@
 import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { sendSignal } from "./Signaller"
 import { log } from "./Utils"
-import { EventBus } from "./EventBus"
+import { EventBus, EVENTS } from "./Events"
 
 export const peerConnection = new RTCPeerConnection({
 	iceServers: [{ urls: ["stun:stun1.l.google.com:19302"] }],
@@ -27,7 +27,7 @@ export function initDataChannel(channel: RTCDataChannel) {
 	}
 
 	channel.onopen = (e) => {
-		location.hash = "game"
+		EventBus.emit(EVENTS.P2P_CHANNEL_OPENED)
 		log("open!!!!", e)
 	}
 	channel.onclose = (e) => log("closed!!!!!!", e)

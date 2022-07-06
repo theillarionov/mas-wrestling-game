@@ -8,20 +8,18 @@
 	</head>
 	<body>
 		<div class="section section_main-menu">
-			<div style="position: absolute; left: 0; top: 0">
-				<span id="id"></span>
-				<button onclick="localStorage.clear()">clear</button><br />
-			</div>
-
 			<div class="buttons">
 				<a href="#practice">practice</a><br />
 				<a href="#join-game">joinGame</a><br />
 				<a href="#create-game">hostGame</a><br />
+				Введите ваше имя:<input /><br />
 				Language:
 				<select>
 					<option>Сахалыы</option>
 					<option>Русский</option>
 				</select>
+				<br /><br />
+				<button onclick="localStorage.clear()">clear</button><br />
 			</div>
 		</div>
 		<div class="section section_join-game">
@@ -29,7 +27,7 @@
 			<button id="join-room">join</button>
 		</div>
 		<div class="section section_create-game">
-			Room ID to copy:<span id="room-id"></span>
+			Room ID to copy:<span id="game-id"></span>
 		</div>
 		<div class="section section_game">
 			<input id="message" />

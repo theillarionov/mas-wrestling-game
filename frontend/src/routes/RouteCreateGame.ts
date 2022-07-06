@@ -3,7 +3,8 @@ import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { peerConnection, initDataChannel } from "../engine/WebRTC"
 import { sendSignal } from "../engine/Signaller"
 import { log } from "../engine/Utils"
-import { Game } from "../engine/Game"
+import { EVENTS } from "../engine/Events"
+import { changeRouteTo } from "../engine/Router"
 
 export const RouteCreateGame: Route = {
 	url: "create-game",
@@ -17,34 +18,27 @@ export const RouteCreateGame: Route = {
 
 		peerConnection.setLocalDescription(offer)
 
-		sendSignal(SIGNALS.PEER.GENERATED_OFFER, { offer })
-		log(SIGNALS.PEER.GENERATED_OFFER)
+		sendSignal(SIGNALS.PEER.STARTED_ACCEPTING_CONNECTIONS, { offer })
+		log(SIGNALS.PEER.STARTED_ACCEPTING_CONNECTIONS)
 	},
-	onLeave(nextRoute) {
-		if (nextRoute.url !== "game") {
-			sendSignal(SIGNALS.PEER.CANCELLED_ROOM)
-			Game.delete()
-			log(SIGNALS.PEER.CANCELLED_ROOM)
-		}
+	onLeave() {
+		sendSignal(SIGNALS.PEER.STOPPED_ACCEPTING_CONNECTIONS)
+		log(SIGNALS.PEER.STOPPED_ACCEPTING_CONNECTIONS)
 	},
 	subscriptions: [
-		/* {
-			type: SIGNALS.HOST.CREATED_ROOM,
-			listener: ({ detail }: any) => {
-				const roomId = detail.roomId
-
-				new Game({ roomId })
-
-				document.querySelector("#room-id")!.innerHTML = roomId
-				log(SIGNALS.HOST.CREATED_ROOM)
-			},
-		}, */
 		{
 			type: SIGNALS.REMOTE.SENDS_ANSWER,
 			listener: ({ detail }: any) => {
 				const { answer } = detail
 				peerConnection.setRemoteDescription(answer)
 				log(SIGNALS.REMOTE.SENDS_ANSWER)
+			},
+		},
+		{
+			type: EVENTS.P2P_CHANNEL_OPENED,
+			listener: () => {
+				changeRouteTo("game")
+				log(EVENTS.P2P_CHANNEL_OPENED)
 			},
 		},
 	],
