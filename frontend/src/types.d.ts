@@ -9,8 +9,8 @@ type Routes = {
 type Route = {
 	url: string
 	onInit?(): void
-	onEnter?(previousRoute?: Route): void
-	onLeave?(nextRoute?: Route): void
+	onEnter?(previousRoute: Route): void
+	onLeave?(nextRoute: Route): void
 	subscriptions?: array
 }
 

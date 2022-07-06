@@ -21,6 +21,10 @@ export class Room {
 		return this.clientId ? Player.instances.get(this.clientId) : undefined
 	}
 
+	delete() {
+		Room.instances.delete(this.id)
+	}
+
 	static instances: Map<string, Room> = new Map()
 
 	static find(id: string): Room | undefined {

@@ -7,7 +7,7 @@ export const RouteJoinGame: Route = {
 	url: "join-game",
 	onInit() {
 		;(<HTMLElement>document.querySelector("#join-room")!).onclick = () => {
-			sendSignal(EVENTS.SIGNALS.CLIENT.ASKS_TO_JOIN, {
+			sendSignal(EVENTS.SIGNALS.CLIENT.WANTS_TO_JOIN, {
 				roomId: (<HTMLInputElement>(
 					document.querySelector("#room-id-join")
 				)).value,

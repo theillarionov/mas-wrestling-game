@@ -1,5 +1,5 @@
 export class Player {
-	_id: string | null = null
+	_id: string = ""
 
 	constructor({ id }: PlayerConstructor) {
 		this.id = id

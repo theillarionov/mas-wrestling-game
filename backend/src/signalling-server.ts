@@ -65,7 +65,7 @@ wss.on("connection", (socket: WebSocket) => {
 
 				break
 
-			case SIGNALS.CLIENT.ASKS_TO_JOIN: {
+			case SIGNALS.CLIENT.WANTS_TO_JOIN: {
 				const room = Room.find(message.roomId)
 
 				if (!room) {
@@ -115,6 +115,15 @@ wss.on("connection", (socket: WebSocket) => {
 				send(SIGNALS.HOST.CREATED_ROOM, { roomId: room.id })
 
 				log(SIGNALS.HOST.WANTS_TO_CREATE_ROOM)
+				break
+			}
+
+			case SIGNALS.HOST.CANCELLED_ROOM: {
+				const room = Room.find(message.roomId)
+
+				room?.delete()
+
+				log(SIGNALS.HOST.CANCELLED_ROOM)
 				break
 			}
 

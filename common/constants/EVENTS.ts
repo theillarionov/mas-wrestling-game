@@ -7,7 +7,7 @@ export const EVENTS = {
 			GENERATED_ANSWER: "client-generated-answer",
 			SENDS_ANSWER: "client-sends-answer",
 
-			ASKS_TO_JOIN: "client-asks-to-join",
+			WANTS_TO_JOIN: "client-wants-to-join",
 		},
 		HOST: {
 			WANTS_TO_CREATE_ROOM: "host-wants-to-create-room",
