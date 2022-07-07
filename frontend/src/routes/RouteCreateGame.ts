@@ -37,7 +37,7 @@ export const RouteCreateGame: Route = {
 		{
 			type: EVENTS.P2P_CHANNEL_OPENED,
 			listener: () => {
-				changeRouteTo("game")
+				changeRouteTo("game1")
 				log(EVENTS.P2P_CHANNEL_OPENED)
 			},
 		},
