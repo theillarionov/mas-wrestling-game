@@ -15,5 +15,5 @@ export default defineConfig({
 		},
 	},
 	envDir: "../common/env",
-	envPrefix: "WS_",
+	envPrefix: "MY_",
 })

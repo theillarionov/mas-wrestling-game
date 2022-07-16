@@ -4,7 +4,16 @@ import { log } from "./Utils"
 import { EventBus, EVENTS } from "./Events"
 
 export const peerConnection = new RTCPeerConnection({
-	iceServers: [{ urls: ["stun:stun1.l.google.com:19302"] }],
+	iceServers: [
+		{
+			urls: [import.meta.env.MY_STUN],
+		},
+		{
+			urls: [import.meta.env.MY_TURN],
+			username: import.meta.env.MY_TURN_USER,
+			credential: import.meta.env.MY_TURN_PASSWORD,
+		},
+	],
 })
 
 peerConnection.onicecandidate = ({ candidate: iceCandidate }) => {
@@ -28,19 +37,21 @@ export function initDataChannel(channel: RTCDataChannel) {
 
 	channel.onopen = (e) => {
 		EventBus.emit(EVENTS.P2P_CHANNEL_OPENED)
-		log("open!!!!", e)
+		log("channel.open", e)
 	}
-	channel.onclose = (e) => log("closed!!!!!!", e)
+	channel.onclose = (e) => log("channel.close", e)
 	peerConnection.channel = channel
 }
 
 /* peerConnection.onicegatheringstatechange = (e) => {
 	log("iceGatheringState", target.iceGatheringState)
 }
-
-peerConnection.oniceconnectionstatechange = (event) => {
+*/
+peerConnection.oniceconnectionstatechange = () => {
+	if (peerConnection.iceConnectionState === "disconnected") {
+	}
 	log("iceConnectionState", peerConnection.iceConnectionState)
-} */
+}
 
 // @ts-ignore
 window.peerConnection = peerConnection

@@ -5,6 +5,7 @@ import { sendSignal } from "../engine/Signaller"
 import { log } from "../engine/Utils"
 import { EVENTS } from "../engine/Events"
 import { changeRouteTo } from "../engine/Router"
+import { RouteGame } from "./RouteGame"
 
 export const RouteCreateGame: Route = {
 	url: "create-game",
@@ -37,7 +38,7 @@ export const RouteCreateGame: Route = {
 		{
 			type: EVENTS.P2P_CHANNEL_OPENED,
 			listener: () => {
-				changeRouteTo("game1")
+				changeRouteTo(RouteGame.url)
 				log(EVENTS.P2P_CHANNEL_OPENED)
 			},
 		},

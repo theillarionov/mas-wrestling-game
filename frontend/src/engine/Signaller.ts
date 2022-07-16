@@ -4,10 +4,10 @@ import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { Player } from "./Player"
 
 const socket = new WebSocket(
-	import.meta.env.WS_SCHEMA +
-		import.meta.env.WS_ADDRESS +
+	import.meta.env.MY_SCHEMA +
+		import.meta.env.MY_ADDRESS +
 		":" +
-		import.meta.env.WS_PORT
+		import.meta.env.MY_PORT
 )
 
 socket.onopen = () => {
@@ -20,11 +20,11 @@ socket.onopen = () => {
 }
 
 socket.onclose = (e) => {
-	log("close from client", e)
+	log("socket.close", e)
 }
 
 socket.onerror = (e) => {
-	log("error from client", e)
+	log("socket.error", e)
 }
 
 const connect = new Promise((resolve) => {

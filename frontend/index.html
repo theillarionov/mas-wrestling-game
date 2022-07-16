@@ -5,20 +5,26 @@
 		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Vite App</title>
+		<style>
+			p {
+				margin: 0;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="section section_main-menu">
 			<div class="buttons">
-				<a href="#practice">practice</a><br />
-				<a href="#join-game">joinGame</a><br />
-				<a href="#create-game">hostGame</a><br />
 				Введите ваше имя:<input /><br />
-				Language:
+				Язык:
 				<select>
 					<option>Сахалыы</option>
 					<option>Русский</option>
 				</select>
 				<br /><br />
+				<a href="#practice">practice</a><br />
+				<a href="#join-game">joinGame</a><br />
+				<a href="#create-game">hostGame</a><br />
+
 				<button onclick="localStorage.clear()">clear</button><br />
 			</div>
 		</div>
@@ -39,12 +45,12 @@
 		<div
 			style="
 				padding-top: 100px;
-				margin-bottom: 100px;
+				z-index: 100;
 				position: absolute;
 				left: 0;
 				bottom: 0;
 				width: 100%;
-				max-height: 10vh;
+				max-height: 50vh;
 				overflow: auto;
 			"
 		>

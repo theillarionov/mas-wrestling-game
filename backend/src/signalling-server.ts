@@ -33,20 +33,22 @@ wss.on("error", (e) => {
 
 wss.on("connection", (socket: WebSocket) => {
 	socket.onerror = (e) => {
-		log("socket error")
+		log("socket.error")
 	}
 
 	socket.onclose = () => {
-		Player.find(socket[playerId])!.delete()
-		log("close")
+		const currentPlayer = Player.find(socket[playerId])!
+
+		if (currentPlayer) currentPlayer.delete()
+		log("socket.close")
 	}
 
 	socket.onmessage = (data: any) => {
+		const currentPlayer = Player.find(socket[playerId])!
+
 		data = JSON.parse(data.data)
 		const type = data.type
 		const message = data.payload
-
-		const currentPlayer = Player.find(socket[playerId])!
 
 		switch (type) {
 			case SIGNALS.HANDSHAKE:
@@ -137,13 +139,13 @@ wss.on("connection", (socket: WebSocket) => {
 	}
 })
 
-server.listen(process.env.WS_PORT, () => {
+server.listen(process.env.MY_PORT, () => {
 	console.log(
 		"Signalling server running on " +
-			process.env.WS_SCHEMA +
-			process.env.WS_ADDRESS +
+			process.env.MY_SCHEMA +
+			process.env.MY_ADDRESS +
 			":" +
-			process.env.WS_PORT
+			process.env.MY_PORT
 	)
 })
 
