@@ -33,7 +33,7 @@ wss.on("error", (e) => {
 
 wss.on("connection", (socket: WebSocket) => {
 	socket.onerror = (e) => {
-		log("socket.error")
+		log("socket.error", e)
 	}
 
 	socket.onclose = () => {
@@ -115,7 +115,7 @@ wss.on("connection", (socket: WebSocket) => {
 
 			case SIGNALS.PEER.GENERATED_ICE_CANDIDATE:
 				currentPlayer.iceCandidates.push(message.iceCandidate)
-				if (currentPlayer.enemyId) {
+				if (currentPlayer.hasEnemy) {
 					send(
 						SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE,
 						{ iceCandidate: message.iceCandidate },
@@ -124,6 +124,11 @@ wss.on("connection", (socket: WebSocket) => {
 				}
 				log(SIGNALS.PEER.GENERATED_ICE_CANDIDATE)
 				break
+
+			case SIGNALS.REMOTE.DISCONNECTED:
+				if (currentPlayer.hasEnemy) currentPlayer.enemy?.delete()
+				currentPlayer.reset()
+				break
 		}
 	}
 
@@ -131,11 +136,8 @@ wss.on("connection", (socket: WebSocket) => {
 		sender.send(JSON.stringify({ type, payload }))
 	}
 
-	function log(text: string) {
-		console.log(
-			text + " by " + socket[playerId]
-			//socket[peer]
-		)
+	function log(text: string, data?: any) {
+		console.log(text + " by " + socket[playerId], data)
 	}
 })
 

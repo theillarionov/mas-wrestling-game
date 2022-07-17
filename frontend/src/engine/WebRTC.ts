@@ -2,19 +2,24 @@ import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { sendSignal } from "./Signaller"
 import { log } from "./Utils"
 import { EventBus, EVENTS } from "./Events"
+import { changeRouteTo } from "./Router"
 
-export const peerConnection = new RTCPeerConnection({
-	iceServers: [
-		{
-			urls: [import.meta.env.GAME_STUN_SERVER],
-		},
-		{
-			urls: [import.meta.env.GAME_TURN_SERVER],
-			username: import.meta.env.GAME_TURN_USER,
-			credential: import.meta.env.GAME_TURN_PASSWORD,
-		},
-	],
-})
+function initPeerConnection() {
+	return new RTCPeerConnection({
+		iceServers: [
+			{
+				urls: [import.meta.env.GAME_STUN_SERVER],
+			},
+			{
+				urls: [import.meta.env.GAME_TURN_SERVER],
+				username: import.meta.env.GAME_TURN_USER,
+				credential: import.meta.env.GAME_TURN_PASSWORD,
+			},
+		],
+	})
+}
+
+export let peerConnection: RTCPeerConnection = initPeerConnection()
 
 peerConnection.onicecandidate = ({ candidate: iceCandidate }) => {
 	sendSignal(SIGNALS.PEER.GENERATED_ICE_CANDIDATE, { iceCandidate })
@@ -49,6 +54,12 @@ export function initDataChannel(channel: RTCDataChannel) {
 */
 peerConnection.oniceconnectionstatechange = () => {
 	if (peerConnection.iceConnectionState === "disconnected") {
+		sendSignal(SIGNALS.REMOTE.DISCONNECTED)
+		peerConnection.close()
+		peerConnection = null
+		peerConnection = initPeerConnection()
+		changeRouteTo("main-menu")
+		// close peer connection
 	}
 	log("iceConnectionState", peerConnection.iceConnectionState)
 }

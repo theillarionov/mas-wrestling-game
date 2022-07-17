@@ -15,7 +15,9 @@ export const RouteCreateGame: Route = {
 
 		initDataChannel(peerConnection.createDataChannel("game"))
 
-		const offer = await peerConnection.createOffer()
+		const offer = await peerConnection.createOffer({
+			iceRestart: true,
+		})
 
 		peerConnection.setLocalDescription(offer)
 

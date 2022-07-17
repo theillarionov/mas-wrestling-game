@@ -20,12 +20,21 @@ export class Player {
 		Player.instances.set(this.id, this)
 	}
 
-	delete(): void {
+	reset() {
+		this.enemyId = null
+		this.accepting_connections = false
+	}
+
+	delete() {
 		Player.instances.delete(this.id)
 	}
 
 	get enemy(): Player | undefined {
 		return this.enemyId ? Player.instances.get(this.enemyId) : undefined
+	}
+
+	get hasEnemy(): boolean {
+		return this.enemyId ? true : false
 	}
 
 	static instances: Map<string, Player> = new Map()

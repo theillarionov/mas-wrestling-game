@@ -15,6 +15,8 @@ export const SIGNALS = {
 		GENERATED_ICE_CANDIDATE: "remote-generated-ice-candidate",
 		SENDS_OFFER_AND_CANDIDATES: "host-sends-offer-and-candidates",
 		SENDS_ANSWER: "remote-sends-answer",
+
+		DISCONNECTED: "remote-disconnected",
 	},
 	HANDSHAKE: "handshake",
 	ERROR: "error",
