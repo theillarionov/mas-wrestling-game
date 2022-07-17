@@ -6,12 +6,12 @@ import { EventBus, EVENTS } from "./Events"
 export const peerConnection = new RTCPeerConnection({
 	iceServers: [
 		{
-			urls: [import.meta.env.MY_STUN],
+			urls: [import.meta.env.GAME_STUN_SERVER],
 		},
 		{
-			urls: [import.meta.env.MY_TURN],
-			username: import.meta.env.MY_TURN_USER,
-			credential: import.meta.env.MY_TURN_PASSWORD,
+			urls: [import.meta.env.GAME_TURN_SERVER],
+			username: import.meta.env.GAME_TURN_USER,
+			credential: import.meta.env.GAME_TURN_PASSWORD,
 		},
 	],
 })

@@ -9,7 +9,7 @@ import { WebSocketServer } from "ws"
 import { ERRORS } from "../../common/constants/ERRORS"
 import { SIGNALS } from "../../common/constants/SIGNALS"
 
-import { Player, playerId } from "./classes/Player"
+import { Player, playerId } from "./Player"
 
 dotenv.config({
 	path: path.join(__dirname, "../../common/env/.env." + process.env.NODE_ENV),
@@ -20,8 +20,8 @@ const useHttps = isProduction
 
 const server = useHttps
 	? createServerHttps({
-			cert: readFileSync("pem"),
-			key: readFileSync("pem"),
+			cert: readFileSync(process.env.NODE_CERT_FILE!),
+			key: readFileSync(process.env.NODE_KEY_FILE!),
 	  })
 	: createServerHttp()
 
@@ -39,7 +39,7 @@ wss.on("connection", (socket: WebSocket) => {
 	socket.onclose = () => {
 		const currentPlayer = Player.find(socket[playerId])!
 
-		if (currentPlayer) currentPlayer.delete()
+		currentPlayer.delete()
 		log("socket.close")
 	}
 
@@ -139,13 +139,13 @@ wss.on("connection", (socket: WebSocket) => {
 	}
 })
 
-server.listen(process.env.MY_PORT, () => {
+server.listen(process.env.GAME_WEBSOCKET_PORT, () => {
 	console.log(
 		"Signalling server running on " +
-			process.env.MY_SCHEMA +
-			process.env.MY_ADDRESS +
+			(process.env.NODE_ENV == "development" ? "ws://" : "wss://") +
+			process.env.GAME_WEBSOCKET_SERVER +
 			":" +
-			process.env.MY_PORT
+			process.env.GAME_WEBSOCKET_PORT
 	)
 })
 

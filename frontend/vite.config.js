@@ -15,5 +15,5 @@ export default defineConfig({
 		},
 	},
 	envDir: "../common/env",
-	envPrefix: "MY_",
+	envPrefix: "GAME_",
 })

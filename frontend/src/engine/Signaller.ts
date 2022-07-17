@@ -4,10 +4,10 @@ import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { Player } from "./Player"
 
 const socket = new WebSocket(
-	import.meta.env.MY_SCHEMA +
-		import.meta.env.MY_ADDRESS +
+	(import.meta.env.DEV ? "ws://" : "wss://") +
+		import.meta.env.GAME_WEBSOCKET_SERVER +
 		":" +
-		import.meta.env.MY_PORT
+		import.meta.env.GAME_WEBSOCKET_PORT
 )
 
 socket.onopen = () => {
