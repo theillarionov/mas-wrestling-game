@@ -31,6 +31,10 @@ EventBus.on(EVENTS.ROUTE_JOIN_GAME_ENTERED, async () => {
 	initPeerConnection()
 })
 
+EventBus.on(EVENTS.PEERCONNECTION_CLOSED, () => {
+	closePeerConnection()
+})
+
 EventBus.on(SIGNALS.REMOTE.GENERATED_ICE_CANDIDATE, ({ detail }) => {
 	const { iceCandidate } = detail
 	peerConnection!.addIceCandidate(iceCandidate)
@@ -94,10 +98,16 @@ function initPeerConnection() {
 		) {
 			log("iceConnectionState", peerConnection!.iceConnectionState)
 			sendSignal(SIGNALS.REMOTE.DISCONNECTED)
-			peerConnection.close()
-			peerConnection = null
+			closePeerConnection()
 			changeRouteTo("main-menu")
 		}
+	}
+}
+
+function closePeerConnection() {
+	if (peerConnection) {
+		peerConnection.close()
+		peerConnection = null
 	}
 }
 

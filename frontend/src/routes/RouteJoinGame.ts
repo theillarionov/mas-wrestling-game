@@ -1,5 +1,6 @@
 import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { EventBus, EVENTS } from "../engine/Events"
+import { RouteLobby } from "./RouteLobby"
 
 export const RouteJoinGame: Route = {
 	url: "join-game",
@@ -16,6 +17,10 @@ export const RouteJoinGame: Route = {
 		document.querySelector(".section_join-game")?.classList.add("active")
 
 		EventBus.emit(EVENTS.ROUTE_JOIN_GAME_ENTERED)
+	},
+	onLeave(nextRoute) {
+		if (nextRoute.url !== RouteLobby.url)
+			EventBus.emit(EVENTS.PEERCONNECTION_CLOSED)
 	},
 	subscriptions: [],
 }

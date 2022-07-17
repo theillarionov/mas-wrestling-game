@@ -5,6 +5,7 @@ import { RouteMainMenu } from "../routes/RouteMainMenu"
 import { RoutePractice } from "../routes/RoutePractice"
 import { RouteJoinGame } from "../routes/RouteJoinGame"
 import { RouteGame } from "../routes/RouteGame"
+import { RouteLobby } from "../routes/RouteLobby"
 
 let currentRoute: Route
 let previousRoute: Route
@@ -16,6 +17,7 @@ const routes: Routes = {
 	[RouteCreateGame.url]: RouteCreateGame,
 	[RouteCreateGame.url]: RouteCreateGame,
 	[RouteGame.url]: RouteGame,
+	[RouteLobby.url]: RouteLobby,
 }
 
 for (const url in routes) {

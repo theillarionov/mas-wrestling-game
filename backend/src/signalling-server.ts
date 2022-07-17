@@ -66,13 +66,13 @@ wss.on("connection", (socket: WebSocket) => {
 			case SIGNALS.PEER.WANTS_TO_JOIN: {
 				const host = Player.find(message.hostId)
 
+				console.log(host)
+
 				if (!host) {
-					send(SIGNALS.ERROR, { text: ERRORS.PLAYER_NOT_FOUND.en })
+					send(SIGNALS.ERROR, ERRORS.PLAYER_NOT_FOUND)
 					return
 				} else if (!host.accepting_connections) {
-					send(SIGNALS.ERROR, {
-						text: ERRORS.PLAYER_NOT_ACCEPTING_CONNECTIONS.en,
-					})
+					send(SIGNALS.ERROR, ERRORS.PLAYER_NOT_ACCEPTING_CONNECTIONS)
 					return
 				}
 

@@ -5,6 +5,7 @@ export const EVENTS = {
 	ROUTE_CREATE_GAME_ENTERED: "route-create-game-entered",
 	ROUTE_JOIN_GAME_ENTERED: "route-join-game-entered",
 	MESSAGE_SENT: "message-sent",
+	PEERCONNECTION_CLOSED: "peerconnection-closed",
 }
 
 export const EventBus = {
