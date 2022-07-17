@@ -1,14 +1,15 @@
-import { peerConnection } from "../engine/WebRTC"
+import { EventBus, EVENTS } from "../engine/Events"
 
 export const RouteGame: Route = {
 	url: "game",
 	onInit() {
 		;(<HTMLElement>document.querySelector("#send-message")!).onclick =
 			() => {
-				const message = (<HTMLInputElement>(
-					document.querySelector("#message")
-				)).value
-				peerConnection.channel.send(message)
+				EventBus.emit(EVENTS.MESSAGE_SENT, {
+					message: (<HTMLInputElement>(
+						document.querySelector("#message")
+					)).value,
+				})
 			}
 	},
 	onEnter() {

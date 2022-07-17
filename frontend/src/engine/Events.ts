@@ -2,6 +2,9 @@ let eventTarget = document.body
 
 export const EVENTS = {
 	P2P_CHANNEL_OPENED: "p2p-channel-opened",
+	ROUTE_CREATE_GAME_ENTERED: "route-create-game-entered",
+	ROUTE_JOIN_GAME_ENTERED: "route-join-game-entered",
+	MESSAGE_SENT: "message-sent",
 }
 
 export const EventBus = {
