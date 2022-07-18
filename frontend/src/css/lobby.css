@@ -1,0 +1,17 @@
+.lobby-status,
+.lobby-ready-button {
+	display: none;
+}
+
+.lobby-status.active,
+.lobby-ready-button.active {
+	display: block;
+}
+
+.lobby-status_not-ready {
+	background: red;
+}
+
+.lobby-status_ready {
+	background: green;
+}

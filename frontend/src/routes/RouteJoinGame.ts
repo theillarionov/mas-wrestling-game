@@ -1,5 +1,6 @@
 import { SIGNALS } from "../../../common/constants/SIGNALS"
 import { EventBus, EVENTS } from "../engine/Events"
+import { Player } from "../engine/Player"
 import { RouteLobby } from "./RouteLobby"
 
 export const RouteJoinGame: Route = {
@@ -15,6 +16,8 @@ export const RouteJoinGame: Route = {
 	},
 	onEnter() {
 		document.querySelector(".section_join-game")?.classList.add("active")
+
+		Player.instances.me!.type = "client"
 
 		EventBus.emit(EVENTS.ROUTE_JOIN_GAME_ENTERED)
 	},

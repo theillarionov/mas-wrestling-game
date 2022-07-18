@@ -3,6 +3,7 @@ import { sendSignal } from "./Signaller"
 import { log } from "./Utils"
 import { EventBus, EVENTS } from "./Events"
 import { changeRouteTo } from "./Router"
+import { RouteMainMenu } from "../routes/RouteMainMenu"
 
 let peerConnection: RTCPeerConnection | null = null
 
@@ -99,7 +100,7 @@ function initPeerConnection() {
 			log("iceConnectionState", peerConnection!.iceConnectionState)
 			sendSignal(SIGNALS.REMOTE.DISCONNECTED)
 			closePeerConnection()
-			changeRouteTo("main-menu")
+			changeRouteTo(RouteMainMenu.url)
 		}
 	}
 }

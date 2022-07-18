@@ -1,5 +1,6 @@
 export class Player {
 	_id: string = ""
+	type: "host" | "client" | "" = ""
 
 	constructor({ id }: PlayerConstructor) {
 		this.id = id

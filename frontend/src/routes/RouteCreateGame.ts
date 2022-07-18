@@ -5,6 +5,7 @@ import { log } from "../engine/Utils"
 import { EventBus, EVENTS } from "../engine/Events"
 import { changeRouteTo } from "../engine/Router"
 import { RouteLobby } from "./RouteLobby"
+import { Player } from "../engine/Player"
 
 export const RouteCreateGame: Route = {
 	url: "create-game",
@@ -13,6 +14,8 @@ export const RouteCreateGame: Route = {
 		document.querySelector(".section_create-game")?.classList.add("active")
 
 		EventBus.emit(EVENTS.ROUTE_CREATE_GAME_ENTERED)
+
+		Player.instances.me!.type = "host"
 	},
 	onLeave(nextRoute) {
 		if (nextRoute.url !== RouteLobby.url)
@@ -20,13 +23,5 @@ export const RouteCreateGame: Route = {
 		sendSignal(SIGNALS.PEER.STOPPED_ACCEPTING_CONNECTIONS)
 		log(SIGNALS.PEER.STOPPED_ACCEPTING_CONNECTIONS)
 	},
-	subscriptions: [
-		{
-			type: EVENTS.P2P_CHANNEL_OPENED,
-			listener: () => {
-				changeRouteTo(RouteLobby.url)
-				log(EVENTS.P2P_CHANNEL_OPENED)
-			},
-		},
-	],
+	subscriptions: [],
 }

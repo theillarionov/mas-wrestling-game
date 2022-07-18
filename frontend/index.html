@@ -35,7 +35,42 @@
 		<div class="section section_create-game">
 			Room ID to copy:<span id="game-id"></span>
 		</div>
-		<div class="section section_lobby">lobby</div>
+		<div class="section section_lobby">
+			<div style="display: flex">
+				<div style="width: 50%">
+					<span
+						class="lobby-status lobby-status_not-ready active"
+						data-player="host"
+						>not ready</span
+					>
+					<span
+						class="lobby-status lobby-status_ready"
+						data-player="host"
+						>ready</span
+					>
+
+					<button class="lobby-ready-button" data-player="host">
+						ready
+					</button>
+				</div>
+				<div style="width: 50%">
+					<span
+						class="lobby-status lobby-status_not-ready active"
+						data-player="client"
+						>not ready</span
+					>
+					<span
+						class="lobby-status lobby-status_ready"
+						data-player="client"
+						>ready</span
+					>
+
+					<button class="lobby-ready-button" data-player="client">
+						ready
+					</button>
+				</div>
+			</div>
+		</div>
 		<div class="section section_game">
 			<input id="message" />
 			<button id="send-message">sendMessage</button><br />
